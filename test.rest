@@ -1,0 +1,58 @@
+
+#busari's token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhmNDIwNDY3MWUwNzgwMGRiNGRmYWYiLCJlbWFpbCI6ImFiZHVsaGFrZWVtLmJ1c2FyaS5vbGF5aW5rYUBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NjUzNjB9.FmLhADP5RA7Gxykbx74uu8CvdpceWMCMygAK_ibwcHs
+#anifat's token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjkwZDA2ZmI3ZmQ4YjFhMDg5NmZlYjIiLCJlbWFpbCI6Im9sYWRlbGVhbmlmYXQwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NjY2MDJ9.R-20Zi4Y_SwDBKXLbCFH5SnFOEBbjfS9xDPBwLPp2MA
+
+
+
+
+
+
+### Register User
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+  "fullName": "Anifat OLADELE",
+  "email": "oladeleanifat01@gmail.com",
+  "password": "123"
+}
+
+
+
+### Login User
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+  "email": "busariolayinka036@gmail.com",
+  "password": "1234"
+}
+
+###
+
+### Forgot Password
+POST http://localhost:3000/user/forgot-password
+Content-Type: application/json
+
+{
+  "email": "abdulhakeem.busari.olayinka@gmail.com"
+}
+
+###
+
+### Reset Password
+POST http://localhost:3000/user/reset-password
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjkxNjBlYzAyZjMxNTQwMTYzNzMyZjYiLCJlbWFpbCI6ImJ1c2FyaW9sYXlpbmthMDM2QGdtYWlsLmNvbSIsImlhdCI6MTcyMDg1MTU1MH0.9KUQ4LLS1CXsnDGGToIbg4l5PPd0k9JjNqKnblD2IbI",
+  "newPassword": "newPassword123"
+}
+
+###
+
+### Get User Profile
+GET http://localhost:3000/user/profile
+Authorization: Bearer hgcsfsdfkjjnkytuiookopiyrvrhdsrtiupopo8764x6cc
+
+###
