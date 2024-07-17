@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
-// Simple email transporter setup
+//  email transporter setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -24,16 +24,16 @@ const registerUser = async (req, res) => {
 
     // Create a new user
     const newUser = new User({
-        fullName: fullName,
-        email: email,
+        fullName,
+        email,
         password: hashedPassword
     });
 
     try {
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).send({ message: 'User registered successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error registering user', error: error.message });
+        res.status(500).send({ message: 'Error registering user', error: error.message });
     }
 };
 
@@ -42,9 +42,9 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({email});
         if (!user) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).send({ message: 'User not found' });
             return;
         }
 
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id, email: user.email }, 'secretkey', { expiresIn: '1h' });
-        res.json({ token: token });
+        res.status(201).send({token});
     } catch (error) {
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
@@ -66,9 +66,9 @@ const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({email});
         if (!user) {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).send({ message: 'User not found' });
             return;
         }
 
@@ -76,28 +76,31 @@ const forgotPassword = async (req, res) => {
         user.resetToken = resetToken;
         await user.save();
 
-        const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+        
         await transporter.sendMail({
             from: process.env.EMAIL_USERNAME,
             to: email,
             subject: 'Password Reset',
-            html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`
+            html: "Hello! Click this link to reset your password http://localhost:3000/reset-password/" + resetToken
         });
 
-        res.json({ message: 'Password reset link sent' });
+        res.status(201).send({ message: 'Password reset link sent' });
     } catch (error) {
-        res.status(500).json({ message: 'Error sending reset link', error: error.message });
+        res.status(500).send({ message: 'Error sending reset link', error: error.message });
     }
 };
 
 // Reset password
 const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
-
+        console.log("sent token:", token)
+        console.log("sent password:", newPassword)
     try {
         const user = await User.findOne({ resetToken: token });
+       
+        console.log("database password", user)
         if (!user) {
-            res.status(400).json({ message: 'Invalid or expired token' });
+            res.status(400).send({ message: 'Invalid token' });
             return;
         }
 
@@ -107,7 +110,7 @@ const resetPassword = async (req, res) => {
 
         res.json({ message: 'Password reset successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error resetting password', error: error.message });
+        res.status(500).send({ message: 'Error resetting password', error: error.message });
     }
 };
 
@@ -115,7 +118,7 @@ const resetPassword = async (req, res) => {
 const getUserProfile = async (req, res) => {
     const token = req.header('Authorization');
     if (!token) {
-        res.status(401).json({ message: 'Access denied' });
+        res.status(401).j({ message: 'Access denied' });
         return;
     }
 
