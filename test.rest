@@ -1,6 +1,4 @@
-
-#busari's token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhmNDIwNDY3MWUwNzgwMGRiNGRmYWYiLCJlbWFpbCI6ImFiZHVsaGFrZWVtLmJ1c2FyaS5vbGF5aW5rYUBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NjUzNjB9.FmLhADP5RA7Gxykbx74uu8CvdpceWMCMygAK_ibwcHs
-#anifat's token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjkwZDA2ZmI3ZmQ4YjFhMDg5NmZlYjIiLCJlbWFpbCI6Im9sYWRlbGVhbmlmYXQwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjA3NjY2MDJ9.R-20Zi4Y_SwDBKXLbCFH5SnFOEBbjfS9xDPBwLPp2MA
+VCJ9..R-20Zi4Y_SwDBKXLbCFH5SnFOEBbjfS9xDPBwLPp2MA
 
 
 
@@ -35,17 +33,17 @@ POST http://localhost:3000/user/forgot-password
 Content-Type: application/json
 
 {
-  "email": "abdulhakeem.busari.olayinka@gmail.com"
+  "email":"Abdulhakeem.busari.olayinka@gmail.com"
 }
 
-###
+
 
 ### Reset Password
 POST http://localhost:3000/user/reset-password
 Content-Type: application/json
 
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk2MmVkMmJiZjA1OGQxNmE0MGFlYzAiLCJlbWFpbCI6IkFiZHVsaGFrZWVtLmJ1c2FyaS5vbGF5aW5rYUBnbWFpbC5jb20iLCJpYXQiOjE3MjExNDc3ODYsImV4cCI6MTcyMTE1MTM4Nn0.HFEB6czFLegoV-gmF2T5Mr8saR8Uxwj4utJf9BAeZME",
+  "token": "6054ec9e-dee9-441c-bf8d-f214bf8daced",
   "newPassword": "newPassword123"
 }
 
@@ -53,6 +51,4 @@ Content-Type: application/json
 
 ### Get User Profile
 GET http://localhost:3000/user/profile
-Authorization: Bearer hgcsfsdfkjjnkytuiookopiyrvrhdsrtiupopo8764x6cc
-
-###
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYyZWQyYmJmMDU4ZDE2YTQwYWVjMCIsImVtYWlsIjoiQWJkdWxoYWtlZW0uYnVzYXJpLm9sYXlpbmthQGdtYWlsLmNvbSIsImlhdCI6MTcyMTQ1OTM1Mn0.w5HiNvN5ywm2jL9o3ZHxSbjEOgpx5yrlLGN4_j_1rkg

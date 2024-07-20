@@ -14,22 +14,9 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
-    isEmailVerified: { 
-        type: Boolean,
-         default: false 
-    },
-    authToken: {
-        type: String
-    },
-    authPurpose: {
-        type: String
-    },
-    resetToken: {
-        type: String
     }
 
-});
+},{timestamps: true});
 
 const User = mongoose.model('User', userSchema);
 

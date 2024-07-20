@@ -1,9 +1,11 @@
 
 
 const User = require('../models/userModel');
+const AuthToken = require("../models/authTokenModel")
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
+const generateJWT = require("../routes/generatingJWT")
 const nodemailer = require('nodemailer');
 
 //  email transporter setup
@@ -54,8 +56,14 @@ const loginUser = async (req, res) => {
             return;
         }
 
-        const token = jwt.sign({ userId: user._id, email: user.email }, 'secretkey', { expiresIn: '1h' });
-        res.status(201).send({token});
+        const jwt = generateJWT({ id: user._id, email });
+        res.status(201).send({
+            user: {
+                id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+              },token: jwt
+        });
     } catch (error) {
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
@@ -72,19 +80,18 @@ const forgotPassword = async (req, res) => {
             return;
         }
 
-        const resetToken = uuidv4();
-        user.resetToken = resetToken;
-        await user.save();
-
-        
-        await transporter.sendMail({
-            from: process.env.EMAIL_USERNAME,
-            to: email,
-            subject: 'Password Reset',
-            html: "Hello! Click this link to reset your password http://localhost:3000/reset-password/" + resetToken
-        });
-
-        res.status(201).send({ message: 'Password reset link sent' });
+        const token = uuidv4();
+        await AuthToken.create({
+            userId: user._id,
+            token,
+            purpose: "password_reset",
+          });
+       
+        res.status(201).send({
+             message: 'Password reset link sent',
+             token,
+             userId: user._id
+             });
     } catch (error) {
         res.status(500).send({ message: 'Error sending reset link', error: error.message });
     }
@@ -96,17 +103,17 @@ const resetPassword = async (req, res) => {
         console.log("sent token:", token)
         console.log("sent password:", newPassword)
     try {
-        const user = await User.findOne({ resetToken: token });
+        const userToken = await AuthToken.findOne({token});
        
-        console.log("database password", user)
-        if (!user) {
+        console.log("database password", userToken)
+        if (!userToken) {
             res.status(400).send({ message: 'Invalid token' });
             return;
         }
 
-        user.password = bcrypt.hashSync(newPassword, 10);
-        user.resetToken = undefined;
-        await user.save();
+        const hashedNewPassword = bcrypt.hashSync(newPassword, 10);
+
+        const userUpdate = await User.findByIdAndDelete(userToken.userId, {password: hashedNewPassword})
 
         res.json({ message: 'Password reset successfully' });
     } catch (error) {
@@ -116,20 +123,31 @@ const resetPassword = async (req, res) => {
 
 // Get user profile
 const getUserProfile = async (req, res) => {
-    const token = req.header('Authorization');
-    if (!token) {
-        res.status(401).j({ message: 'Access denied' });
-        return;
+try{
+    const userEmail = req.user.email;
+
+    if (!userEmail) {
+        return res.status(400).send({ message: 'User email is not provided' });
     }
 
-    try {
-        const decoded = jwt.verify(token, 'secretkey');
-        const user = await User.findById(decoded.userId).select('fullName email');
-        res.json(user);
-    } catch (error) {
-        res.status(400).json({ message: 'Invalid token' });
+    const userProfile = await User.findOne({ email: userEmail });
+    if (!userProfile) {
+        return res.status(404).send({ message: 'User not found' });
     }
-};
+    res.status(200).send({
+        fullName: userProfile.fullName,
+        email: userProfile.email
+    });    
+    
+} catch (error) {
+    res.status(500).send({ message: 'Error fetching user profile', error: error.message });
+}
+}
+
+
+  
+    
+
 
 module.exports = {
     registerUser,
