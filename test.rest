@@ -10,8 +10,8 @@ POST http://localhost:3000/user/register
 Content-Type: application/json
 
 {
-  "fullName": "Olayinka",
-  "email": "Abdulhakeem.busari.olayinka@gmail.com",
+  "fullName": "Ola gold",
+  "email": "hobusari@student.oauife.edu.ng",
   "password": "12345"
 }
 
@@ -22,8 +22,8 @@ POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
-  "email": "Abdulhakeem.busari.olayinka@gmail.com",
-  "password": "12345"
+  "email": "hobusari@student.oauife.edu.ng",
+  "password": "ola123"
 }
 
 ###
@@ -51,4 +51,4 @@ Content-Type: application/json
 
 ### Get User Profile
 GET http://localhost:3000/user/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYyZWQyYmJmMDU4ZDE2YTQwYWVjMCIsImVtYWlsIjoiQWJkdWxoYWtlZW0uYnVzYXJpLm9sYXlpbmthQGdtYWlsLmNvbSIsImlhdCI6MTcyMTQ1OTM1Mn0.w5HiNvN5ywm2jL9o3ZHxSbjEOgpx5yrlLGN4_j_1rkg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTFlMTNhMTMyNjAyYzU5NjBiZmQ5MSIsImVtYWlsIjoiaG9idXNhcmlAc3R1ZGVudC5vYXVpZmUuZWR1Lm5nIiwiaWF0IjoxNzIxODg1NjgwfQ.F799JSBjf_rGWuafTVpWTUjFbaZzhvlpsCr6SLPUkqI

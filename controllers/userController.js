@@ -5,17 +5,11 @@ const AuthToken = require("../models/authTokenModel")
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
-const generateJWT = require("../routes/generatingJWT")
+const generateJWT = require("../utilities/generatingJWT")
 const nodemailer = require('nodemailer');
+const {sendEmail} = require("../utilities/emailUti")
 
-//  email transporter setup
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-    }
-});
+
 
 // Register user
 const registerUser = async (req, res) => {
@@ -87,6 +81,10 @@ const forgotPassword = async (req, res) => {
             purpose: "password_reset",
           });
        
+          const resetLink = `http://localhost:3000/reset-password/${token}`;
+          await sendEmail(email, 'Password Reset', `Click the following link to reset your password: ${resetLink}`, token);
+  
+
         res.status(201).send({
              message: 'Password reset link sent',
              token,
@@ -113,7 +111,7 @@ const resetPassword = async (req, res) => {
 
         const hashedNewPassword = bcrypt.hashSync(newPassword, 10);
 
-        const userUpdate = await User.findByIdAndDelete(userToken.userId, {password: hashedNewPassword})
+        const userUpdate = await User.findByIdAndUpdate(userToken.userId, {password: hashedNewPassword})
 
         res.json({ message: 'Password reset successfully' });
     } catch (error) {
